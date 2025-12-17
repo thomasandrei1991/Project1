@@ -1,0 +1,47 @@
+.container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-container{
+    height: 200px;
+    width: 300px;
+    display: flex;
+    flex-direction: column; /* 👈 ito ang kulang */
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: lightgrey;
+    gap: 10px;
+}
+.form-container input, button{
+    height: 30px;
+    width: 200px;
+    border: none;
+    border-radius: 10px;
+}
+
+.form-container input:focus{
+    outline: none;
+    border: none;
+}
+.form-container{
+    border: 1px solid #ddd;
+    border-color: lightgrey;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.form-container button{
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: royalblue;
+    color: white;
+}
+
+.form-container button:hover{
+    background-color: darkblue;
+}
+.form-container button:active{
+    background-color: blue;
+}
