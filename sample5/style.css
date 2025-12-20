@@ -1,0 +1,114 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+#title{
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: goldenrod;
+    text-align: center;
+    font-size: 80px;
+    margin-top: 40px;
+    margin: 40px 0;
+}
+#csharp{
+    border: 2px solid turquoise;
+    color: turquoise;
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+}
+#python{
+    border: 2px solid magenta;
+    color: magenta;
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+}
+#cpp{
+    border: 2px solid blueviolet;
+    color: blueviolet;
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+}
+#java{
+    border: 2px solid tomato;
+    color: tomato;
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+}
+#btn-csharp{
+    margin-top: 20px;
+    border-style: solid;
+    border-color: turquoise;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: transparent;
+    color: turquoise;
+    height: 40px;
+    width: 100px;
+}
+#btn-python{
+    margin-top: 20px;
+    border-style: solid;
+    border-color: magenta;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: transparent;
+    color: magenta;
+    height: 40px;
+    width: 100px;
+}
+#btn-cpp{
+    margin-top: 20px;
+    border-style: solid;
+    border-color: blueviolet;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: transparent;
+    color: blueviolet;
+    height: 40px;
+    width: 100px;
+}
+#btn-java{
+    margin-top: 20px;
+    border-style: solid;
+    border-color: tomato;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: transparent;
+    color: tomato;
+    height: 40px;
+    width: 100px;
+}
+.card{
+    cursor: pointer;
+}
+.card button{
+    cursor: pointer;
+}
+.card:hover{
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.2);
+    transform: scale(1.10);
+    transition: all 0.6s ease;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    gap: 40px;
+}
+.container h1{
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 48px;
+    margin: 0;
+}
