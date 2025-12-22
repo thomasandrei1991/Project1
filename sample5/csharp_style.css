@@ -1,0 +1,80 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(32, 31, 31);
+}
+header h1{
+    color: turquoise;
+    font-family: 'Inter', sans-serif;
+    font-size: 80px;
+    margin-top: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+header hr{
+    width: 100%;
+    border: 3px solid turquoise;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+section{
+    width: 80%;
+    margin: 0 auto;
+    color: turquoise;
+    font-family: 'Inter', sans-serif;
+    padding: 10px;
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.fundamentals{
+    height: 300px;
+    width: 900px;
+    background-color: transparent;
+    border: 2px solid turquoise;
+    border-radius: 20px;
+    margin: 0 auto;
+    padding: 30px;
+}
+.basic-structure{
+    height: 500px;
+    width: 900px;
+    background-color: transparent;
+    border: 2px solid turquoise;
+    border-radius: 20px;
+    margin: 0 auto;
+    padding: 30px;
+}
+.variables-data-types{
+    height: 800px;
+    width: 900px;
+    background-color: transparent;
+    border: 2px solid turquoise;
+    border-radius: 20px;
+    margin: 0 auto;
+    padding: 30px;
+}
+/* Paragraph inside the box */
+#p1{
+    color: turquoise;
+    font-size: 30px;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 20px;
+}
+#p3{
+    color: turquoise;
+    font-size: 30px;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 20px;
+}
+#p5{
+    color: turquoise;
+    font-size: 30px;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 20px;
+}

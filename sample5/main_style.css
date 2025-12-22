@@ -1,7 +1,7 @@
 body{
     margin: 0;
     padding: 0;
-    background-color: black;
+    background-color: rgb(32, 31, 31);
 }
 #title{
     font-family: 'Playfair Display', serif;
