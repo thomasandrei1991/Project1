@@ -62,6 +62,19 @@
                     </p>
                 </div>
             </section>
+            <section>
+                 <div class="input-output">
+                    <p id="p7">Input and Output in C#</p>
+                    <p id="p8">
+                        C# uses the Console class to interact with users.
+                    </p>
+                    <p id="p9">Example : <br><br>
+                        Console.Write("Enter your name: "); <br>
+                        string name = Console.ReadLine(); <br>
+                        Console.WriteLine("Hello " + name); <br>
+                    </p>
+                </div>
+            </section>
         </main>
     </body>
 </html>

@@ -48,7 +48,7 @@ section{
     padding: 30px;
 }
 .variables-data-types{
-    height: 800px;
+    height: auto;
     width: 900px;
     background-color: transparent;
     border: 2px solid turquoise;
@@ -56,6 +56,17 @@ section{
     margin: 0 auto;
     padding: 30px;
 }
+
+.input-output{
+    height: auto;
+    width: 900px;
+    background-color: transparent;
+    border: 2px solid turquoise;
+    border-radius: 20px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
 /* Paragraph inside the box */
 #p1{
     color: turquoise;
