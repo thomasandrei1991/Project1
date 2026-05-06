@@ -9,6 +9,14 @@ body{
     color: black;
     padding: 20px;
 }
+.logo{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.logo img{
+    height: 100px;
+    width: 200px;
+}
 .profile-img {
     text-align: center;
     margin-bottom: 20px;
@@ -18,7 +26,7 @@ body{
 .profile-img img{
     border-radius: 50px;
     border-style: solid;
-    border-width: 5px;
+    border-width: 2px;
     border-color: gold;
     height: 300px;
     width: 340px;
@@ -31,7 +39,7 @@ body{
     background-color: white;
     border-radius: 50px;
     border-style: solid;
-    border-width: 5px;
+    border-width: 2px;
     border-color: gold;
 }
 .name h1{
@@ -44,4 +52,16 @@ body{
     flex-direction: row;
     margin-left: 60px;
     gap: 40px;
+}
+
+.about{
+    height: 400px;
+    width: 1380px;
+    background-color: white;
+    margin-left: 60px;
+    padding: 30px;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: gold;
 }

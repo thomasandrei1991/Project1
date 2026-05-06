@@ -1,6 +1,7 @@
 // Variables
 let profileImg = document.querySelector('.profile-img img');
 let nameTag = document.querySelector('.name-tag');
+let about = document.querySelector('.about');
 let changeBtn = document.querySelector('.change-color');
 
 // Functions for hovering profile image
@@ -19,12 +20,16 @@ function toggleMode() {
     if (isDark) {
         document.body.style.backgroundColor = 'rgb(50, 46, 46)';
         nameTag.style.backgroundColor = 'rgb(50, 46, 46)';
+        about.style.backgroundColor = 'rgb(50, 46, 46)';
         nameTag.style.color = 'white';
+        about.style.color = 'white';
         isDark = false;
     } else {
         document.body.style.backgroundColor = 'white';
         nameTag.style.backgroundColor = 'white';
+        about.style.backgroundColor = 'white';
         nameTag.style.color = 'black';
+        about.style.color = 'black';
         isDark = true;
     }
 }
