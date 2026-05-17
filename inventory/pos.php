@@ -130,10 +130,48 @@ if (!$result) {
 
             </div>
 
+            <div id="receipt"
+                 class="receipt">
+
+                <h2>POS SYSTEM</h2>
+
+                <hr>
+
+                <div id="receipt-items"></div>
+
+                <hr>
+
+                <h3>
+                    Total:
+                    ₱<span id="receipt-total">0</span>
+                </h3>
+
+                <h3>
+                    Payment:
+                    ₱<span id="receipt-payment">0</span>
+                </h3>
+
+                <h3>
+                    Change:
+                    ₱<span id="receipt-change">0</span>
+                </h3>
+
+                <br>
+
+                <p>
+                    Thank you for your purchase!
+                </p>
+
+                <button onclick="printReceipt()">
+                    Print Receipt
+                </button>
+
+            </div>
+
         </div>
 
     </div>
-
+    
 </div>
 
 <script>
@@ -275,13 +313,113 @@ function checkout(){
             .value
         );
 
+    if(payment < total){
+
+        alert("Insufficient Payment");
+        return;
+
+    }
+
     let change = payment - total;
 
     document.getElementById("change")
             .innerText = change;
 
+    fetch("actions/checkout.php", {
+
+        method: "POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify(cart)
+
+    })
+
+    .then(response => response.text())
+
+    .then(data => {
+
+    let receiptItems = "";
+
+    cart.forEach(item => {
+
+        receiptItems += `
+            <p>
+
+                ${item.product}
+
+                x${item.qty}
+
+                - ₱${item.price * item.qty}
+
+            </p>
+        `;
+
+    });
+
+    document.getElementById("receipt-items")
+            .innerHTML = receiptItems;
+
+    document.getElementById("receipt-total")
+            .innerText = total;
+
+    document.getElementById("receipt-payment")
+            .innerText = payment;
+
+    document.getElementById("receipt-change")
+            .innerText = change;
+
+    document.getElementById("receipt")
+            .style.display = "block";
+
     alert("Checkout Successful!");
 
+    cart = [];
+
+    displayCart();
+
+    document.getElementById("payment")
+            .value = "";
+
+});
+
+}
+
+function printReceipt(){
+
+    let receipt =
+        document.getElementById("receipt")
+        .innerHTML;
+
+    let original =
+        document.body.innerHTML;
+
+    document.body.innerHTML = receipt;
+
+    window.print();
+
+    document.body.innerHTML = original;
+
+    location.reload();
+
+}
+
+// Optional: populate receipt elements and show receipt
+function showReceipt(payment, change, total){
+    const receipt = document.getElementById('receipt');
+    const items = document.getElementById('receipt-items');
+    items.innerHTML = '';
+    cart.forEach(item => {
+        const div = document.createElement('div');
+        div.textContent = `${item.product} x${item.qty} — ₱${item.price * item.qty}`;
+        items.appendChild(div);
+    });
+    document.getElementById('receipt-total').innerText = total;
+    document.getElementById('receipt-payment').innerText = payment;
+    document.getElementById('receipt-change').innerText = change;
+    receipt.style.display = 'block';
 }
 
 </script>

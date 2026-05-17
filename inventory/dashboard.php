@@ -1,19 +1,53 @@
 <?php
+
 session_start();
+
+require_once __DIR__ . "/config/database.php";
 
 if(!isset($_SESSION['username'])){
     header("Location: login.php");
 }
+
+$totalSalesQuery =
+"SELECT SUM(total) AS total_sales
+ FROM sales";
+
+$totalSalesResult =
+mysqli_query($conn, $totalSalesQuery);
+
+$totalSales =
+mysqli_fetch_assoc($totalSalesResult);
+
+$productQuery =
+"SELECT COUNT(*) AS total_products
+ FROM products";
+
+$productResult =
+mysqli_query($conn, $productQuery);
+
+$totalProducts =
+mysqli_fetch_assoc($productResult);
+
+$transactionQuery =
+"SELECT COUNT(*) AS total_transactions
+ FROM sales";
+
+$transactionResult =
+mysqli_query($conn, $transactionQuery);
+
+$totalTransactions =
+mysqli_fetch_assoc($transactionResult);
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 
-    <title>Dashboard</title>
+<title>Dashboard</title>
 
-    <link rel="stylesheet"
-          href="assets/css/style.css">
+<link rel="stylesheet"
+      href="assets/css/style.css">
 
 </head>
 
@@ -21,73 +55,64 @@ if(!isset($_SESSION['username'])){
 
 <div class="dashboard-container">
 
-    <div class="sidebar">
+<div class="sidebar">
 
-        <h2>POS SYSTEM</h2>
+<h2>POS SYSTEM</h2>
 
-        <ul>
+<ul>
 
-            <li>
-                <a href="dashboard.php">
-                    Dashboard
-                </a>
-            </li>
+<li><a href="dashboard.php">Dashboard</a></li>
+<li><a href="pos.php">POS</a></li>
+<li><a href="inventory.php">Inventory</a></li>
+<li><a href="reports.php">Reports</a></li>
+<li><a href="logout.php">Logout</a></li>
 
-            <li>
-                <a href="pos.php">
-                    POS
-                </a>
-            </li>
+</ul>
 
-            <li>
-                <a href="inventory.php">
-                    Inventory
-                </a>
-            </li>
+</div>
 
-            <li>
-                <a href="reports.php">
-                    Reports
-                </a>
-            </li>
+<div class="main-content">
 
-            <li>
-                <a href="logout.php">
-                    Logout
-                </a>
-            </li>
+<h1>
+Welcome,
+<?php echo $_SESSION['username']; ?>
+</h1>
 
-        </ul>
+<div class="cards">
 
-    </div>
+<div class="card">
 
-    <div class="main-content">
+<h3>Total Sales</h3>
 
-        <h1>
-            Welcome,
-            <?php echo $_SESSION['username']; ?>
-        </h1>
+<p>
+₱<?php echo number_format($totalSales['total_sales'], 2); ?>
+</p>
 
-        <div class="cards">
+</div>
 
-            <div class="card">
-                <h3>Total Sales</h3>
-                <p>₱15,000</p>
-            </div>
+<div class="card">
 
-            <div class="card">
-                <h3>Total Products</h3>
-                <p>150</p>
-            </div>
+<h3>Total Products</h3>
 
-            <div class="card">
-                <h3>Total Transactions</h3>
-                <p>320</p>
-            </div>
+<p>
+<?php echo $totalProducts['total_products']; ?>
+</p>
 
-        </div>
+</div>
 
-    </div>
+<div class="card">
+
+<h3>Total Transactions</h3>
+
+<p>
+<?php echo $totalTransactions['total_transactions']; ?>
+</p>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
