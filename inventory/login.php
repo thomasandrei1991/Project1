@@ -6,7 +6,7 @@
         <title>POS Login</title>
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
-    <body>
+    <body class="login-page">
 
         <div class="login-container">
             <h1>📦 POS SYSTEM</h1>
@@ -15,11 +15,13 @@
                 <input type="text"
                     name="username"
                     placeholder="Username"
+                    autocomplete="off"
                     required>
                 
                 <input type="password"
                     name="password"
                     placeholder="Password"
+                    autocomplete="off"
                     required>
                 
                 <button type="submit" name="login">Sign In</button>
