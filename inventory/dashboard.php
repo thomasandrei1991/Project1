@@ -7,30 +7,88 @@ if(!isset($_SESSION['username'])){
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - POS System</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+
+    <title>Dashboard</title>
+
+    <link rel="stylesheet"
+          href="assets/css/style.css">
+
 </head>
+
 <body>
 
 <div class="dashboard-container">
-    <nav class="navbar">
-        <h1>📦 POS SYSTEM</h1>
-        <div class="navbar-links">
-            <span style="color: #666;">Welcome, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong></span>
-            <a href="logout.php" class="logout-btn">Logout</a>
-        </div>
-    </nav>
-    
-    <div class="dashboard-content">
-        <div class="welcome-card">
-            <h2>Dashboard</h2>
-            <p>Welcome to your POS System. Select an option from the menu to get started.</p>
-        </div>
+
+    <div class="sidebar">
+
+        <h2>POS SYSTEM</h2>
+
+        <ul>
+
+            <li>
+                <a href="dashboard.php">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="pos.php">
+                    POS
+                </a>
+            </li>
+
+            <li>
+                <a href="inventory.php">
+                    Inventory
+                </a>
+            </li>
+
+            <li>
+                <a href="reports.php">
+                    Reports
+                </a>
+            </li>
+
+            <li>
+                <a href="logout.php">
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
     </div>
+
+    <div class="main-content">
+
+        <h1>
+            Welcome,
+            <?php echo $_SESSION['username']; ?>
+        </h1>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Sales</h3>
+                <p>₱15,000</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Products</h3>
+                <p>150</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Transactions</h3>
+                <p>320</p>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 </body>
