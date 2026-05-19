@@ -1,34 +1,34 @@
 <?php
 
-session_start();
+    session_start();
 
-require_once "../config/database.php";
+    require_once "../config/database.php";
 
-/** @var mysqli $conn */
+    /** @var mysqli $conn */
 
-if(isset($_POST['login'])){
+    if(isset($_POST['login'])){
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users
-            WHERE username='$username'
-            AND password='$password'";
+        $sql = "SELECT * FROM users
+                WHERE username='$username'
+                AND password='$password'";
 
-    $result = mysqli_query($conn, $sql);
+        $result = mysqli_query($conn, $sql);
 
-    if(mysqli_num_rows($result) > 0){
+        if(mysqli_num_rows($result) > 0){
 
-        $_SESSION['username'] = $username;
+            $_SESSION['username'] = $username;
 
-        header("Location: ../dashboard.php");
+            header("Location: ../dashboard.php");
 
-    }else{
+        }else{
 
-        echo "Invalid Username or Password";
+            echo "Invalid Username or Password";
+
+        }
 
     }
-
-}
 
 ?>
