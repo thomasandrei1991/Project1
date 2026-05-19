@@ -41,7 +41,10 @@
                         <div class="product-card">
                             <h3><?php echo $row['product_name']; ?></h3>
                             <p> ₱<?php echo $row['price']; ?></p>
-                            <button onclick="addToCart( '<?php echo $row['product_name']; ?>', <?php echo $row['price']; ?>)"> Add to Cart </button>
+                            <p style="font-size: 0.85rem; color: #64748b; margin: 8px 0;">Stock: <strong><?php echo $row['stocks']; ?></strong></p>
+                            <button onclick="addToCart('<?php echo $row['product_name']; ?>', <?php echo $row['price']; ?>, <?php echo $row['stocks']; ?>)" <?php echo ($row['stocks'] <= 0) ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''; ?>> 
+                                <?php echo ($row['stocks'] <= 0) ? 'Out of Stock' : 'Add to Cart'; ?>
+                            </button>
                         </div>
                         <?php } ?>
                     </div>
@@ -80,6 +83,7 @@
                         </div>
                     </div>
                     <div id="receipt" class="receipt">
+                        <button class="close-btn" onclick="closeReceipt()">&times;</button>
                         <h2>POS SYSTEM</h2>
                         <hr>
                         <div id="receipt-items"></div>
@@ -106,8 +110,14 @@
         <script>
             let cart = [];
 
-            function addToCart(product, price){
+            function addToCart(product, price, availableStock){
                 let existing = cart.find(item => item.product === product);
+                let currentQuantityInCart = existing ? existing.qty : 0;
+
+                if(currentQuantityInCart >= availableStock){
+                    alert("Cannot add more " + product + ". Only " + availableStock + " available in stock.");
+                    return;
+                }
 
                 if(existing){
                     existing.qty++;
@@ -200,28 +210,40 @@
                     },
                     body: JSON.stringify(cart)
                 })
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                    return response.text();
+                })
                 .then(data => {
-                let receiptItems = "";
-                cart.forEach(item => {
-                    receiptItems += `
-                        <p>
-                            ${item.product}
-                            x${item.qty}
-                            - ₱${item.price * item.qty}
-                        </p>
-                    `;
-                });
+                    let receiptItems = "";
+                    cart.forEach(item => {
+                        receiptItems += `
+                            <p>
+                                ${item.product}
+                                x${item.qty}
+                                - ₱${item.price * item.qty}
+                            </p>
+                        `;
+                    });
 
-                document.getElementById("receipt-items").innerHTML = receiptItems;
-                document.getElementById("receipt-total").innerText = total;
-                document.getElementById("receipt-payment").innerText = payment;
-                document.getElementById("receipt-change").innerText = change;
-                document.getElementById("receipt").style.display = "block";
-                alert("Checkout Successful!");
-                cart = [];
-                displayCart();
-                document.getElementById("payment").value = "";});
+                    document.getElementById("receipt-items").innerHTML = receiptItems;
+                    document.getElementById("receipt-total").innerText = total;
+                    document.getElementById("receipt-payment").innerText = payment;
+                    document.getElementById("receipt-change").innerText = change;
+                    document.getElementById("receipt").style.display = "block";
+                    alert("Checkout Successful! Inventory has been updated.");
+                    cart = [];
+                    displayCart();
+                    document.getElementById("payment").value = "";
+                })
+                .catch(error => {
+                    alert("Error: " + error.message);
+                    document.getElementById("change").innerText = "0";
+                });
 
             }
 
@@ -232,7 +254,10 @@
                 window.print();
                 document.body.innerHTML = original;
                 location.reload();
+            }
 
+            function closeReceipt(){
+                document.getElementById("receipt").style.display = "none";
             }
 
             // Optional: populate receipt elements and show receipt
