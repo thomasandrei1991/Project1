@@ -25,7 +25,11 @@ textarea {
     transition: all 0.25s ease;
 }
 
-button {
+button,
+a,
+.card,
+.product-card,
+.sidebar ul li a {
     cursor: pointer;
 }
 
@@ -146,6 +150,7 @@ body.login-page {
     font-size: 0.95rem;
     font-weight: 500;
     transition: transform 0.2s ease, background 0.2s ease;
+    cursor: pointer;
 }
 
 .sidebar ul li a:hover,
@@ -157,6 +162,7 @@ body.login-page {
 .main-content {
     flex: 1;
     padding: 36px 40px;
+    overflow-x: hidden;
 }
 
 .main-content h1 {
@@ -325,6 +331,14 @@ textarea:focus {
     .cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .main-content {
+        padding: 32px 24px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -336,14 +350,35 @@ textarea:focus {
         width: 100%;
         min-height: auto;
         position: relative;
+        padding: 24px 20px;
+    }
+
+    .sidebar h2 {
+        font-size: 1rem;
+        margin-bottom: 24px;
+    }
+
+    .sidebar ul li a {
+        padding: 12px 16px;
+        font-size: 0.9rem;
     }
 
     .main-content {
-        padding: 24px;
+        padding: 24px 16px;
+    }
+
+    .main-content h1 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        margin-bottom: 16px;
     }
 
     .cards {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .card {
+        padding: 20px 16px;
     }
 
     form {
@@ -351,16 +386,28 @@ textarea:focus {
         align-items: stretch;
     }
 
+    form input,
+    form button {
+        min-width: unset;
+        flex: 1 1 100%;
+    }
+
     form button {
         width: 100%;
+        flex: 0 0 auto;
     }
 
     .pos-container {
         flex-direction: column;
+        gap: 16px;
     }
 
     .products {
         grid-template-columns: 1fr;
+    }
+
+    .cart {
+        padding: 20px 16px;
     }
 }
 
@@ -390,6 +437,7 @@ textarea:focus {
     justify-content: space-between;
     min-height: 320px;
     height: 100%;
+    cursor: pointer;
 }
 
 .product-card:hover {
@@ -435,6 +483,7 @@ textarea:focus {
     border-radius: 28px;
     height: fit-content;
     box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+    min-width: 0;
 }
 
 .cart-header {
@@ -505,6 +554,7 @@ textarea:focus {
     color: #111827;
     font-size: 0.9rem;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .cart-table button:hover {
@@ -531,6 +581,7 @@ textarea:focus {
     font-size: 0.95rem;
     cursor: pointer;
     transition: background 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .qty-btn:hover {
@@ -667,4 +718,132 @@ textarea:focus {
 
 .receipt button{
     margin-top:15px;
+}
+canvas{
+    margin-top:20px;
+}
+
+/* Extra small screens (mobile) */
+@media (max-width: 480px) {
+    .sidebar {
+        padding: 16px 12px;
+    }
+
+    .sidebar h2 {
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+    }
+
+    .sidebar ul {
+        gap: 8px;
+    }
+
+    .sidebar ul li a {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .main-content {
+        padding: 16px 12px;
+    }
+
+    .main-content h1 {
+        font-size: clamp(1.25rem, 4vw, 1.5rem);
+        margin-bottom: 12px;
+    }
+
+    .cards {
+        gap: 12px;
+    }
+
+    .card {
+        padding: 16px 12px;
+    }
+
+    .card h3 {
+        font-size: 0.85rem;
+    }
+
+    .card p {
+        font-size: 1.5rem;
+    }
+
+    form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    form input,
+    form button {
+        height: 48px;
+    }
+
+    form button {
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .products {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .product-card {
+        min-height: 280px;
+        padding: 16px 12px;
+    }
+
+    .product-card h3 {
+        font-size: 1rem;
+    }
+
+    .product-card p {
+        font-size: 0.9rem;
+    }
+
+    .product-card button {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+    }
+
+    .cart {
+        padding: 16px 12px;
+    }
+
+    .cart-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .cart-table th,
+    .cart-table td {
+        padding: 12px 8px;
+        font-size: 0.85rem;
+    }
+
+    .cart-actions {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .summary-row {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    table th,
+    table td {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablet screens */
+@media (max-width: 1200px) {
+    .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .main-content {
+        padding: 28px 20px;
+    }
 }
