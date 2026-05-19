@@ -1028,6 +1028,8 @@ canvas{
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
+    align-items: stretch;
+    grid-auto-rows: 1fr;
 }
 
 .product-card {
@@ -1040,6 +1042,7 @@ canvas{
     flex-direction: column;
     justify-content: space-between;
     min-height: 320px;
+    height: 100%;
 }
 
 .product-card:hover {

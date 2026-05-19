@@ -8,7 +8,8 @@
     require_once __DIR__ . "/config/database.php";
     $sql = "SELECT * FROM products";
     $result = mysqli_query($conn, $sql);
-
+    $categoryQuery = "SELECT DISTINCT category FROM products";
+    $categoryResult = mysqli_query($conn, $categoryQuery);
     if (!$result) {
         die("Database query failed: " . mysqli_error($conn));
     }
@@ -38,20 +39,24 @@
             <div class="main-content">
                 <h1>Point of Sale</h1>
                 <div class="pos-container">
-                    
                     <div class="search-container">
                         <input type="text" id="search" placeholder="Search Product..." onkeyup="searchProduct()">
                         <select id="categoryFilter" onchange="filterCategory()">
                             <option value="all">All Categories</option>
-                            <option value="snacks">Snacks</option>
-                            <option value="drinks">Drinks</option>
-                            <option value="meals">Meals</option>
+                            <?php 
+                                $categoryResult = mysqli_query($conn, "SELECT DISTINCT category FROM products ORDER BY category ASC");
+                                while($category = mysqli_fetch_assoc($categoryResult)){ 
+                            ?>
+                            <option value="<?php echo strtolower(trim($category['category'])); ?>">
+                                <?php echo ucfirst($category['category']); ?>
+                            </option>
+                            <?php } ?>
                         </select>
                     </div>
 
                     <div class="products">
                         <?php while($row = mysqli_fetch_assoc($result)){ ?>
-                        <div class="product-card" data-name="<?php echo strtolower($row['product_name']); ?>" data-category="<?php echo strtolower($row['category']); ?>">
+                        <div class="product-card" data-name="<?php echo strtolower($row['product_name']); ?>" data-category="<?php echo strtolower(trim($row['category'])); ?>">
                             <h3><?php echo $row['product_name']; ?></h3>
                             <p> ₱<?php echo $row['price']; ?></p>
                             <p style="font-size: 0.85rem; color: #64748b; margin: 8px 0;">Stock: <strong><?php echo $row['stocks']; ?></strong></p>
@@ -287,7 +292,7 @@
                 cards.forEach(card => {
                     let name = card.dataset.name;
                     if(name.includes(input)){
-                        card.style.display = "block";
+                        card.style.display = "";
                     }else{
                         card.style.display = "none";
                     }
@@ -295,13 +300,12 @@
             }
 
             function filterCategory(){
-                let category = document.getElementById("categoryFilter").value.toLowerCase();
+                let category = document.getElementById("categoryFilter").value.toLowerCase().trim();
                 let cards = document.querySelectorAll(".product-card");
                 cards.forEach(card => {
-                    let productCategory =
-                    card.dataset.category;
-                    if(category == "all" ||productCategory == category){
-                        card.style.display = "block";
+                    let productCategory = card.dataset.category.toLowerCase().trim();
+                    if(category === "all" || productCategory === category){
+                        card.style.display = "";
                     }else{
                         card.style.display = "none";
                     }

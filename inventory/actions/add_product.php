@@ -9,8 +9,8 @@
         $price = $_POST['price'];
         $stocks = $_POST['stocks'];
 
-        $sql = "INSERT INTO products(product_name, price, stocks)
-                VALUES('$product_name', '$price', '$stocks')";
+        $sql = "INSERT INTO products(product_name, category, price, stocks)
+                VALUES('$product_name', '$category', '$price', '$stocks')";
 
         $result = mysqli_query($conn, $sql);
         if (!$result) {
