@@ -47,8 +47,10 @@
                 <ul>
                     <li><a href="dashboard.php">Dashboard</a></li>
                     <li><a href="pos.php">POS</a></li>
-                    <li><a href="inventory.php">Inventory</a></li>
-                    <li><a href="reports.php">Reports</a></li>
+                    <?php if($_SESSION['role'] == 'admin'){ ?>
+                        <li><a href="inventory.php">Inventory</a></li>
+                        <li><a href="reports.php">Reports</a></li>
+                    <?php } ?>
                     <li><a href="logout.php">Logout</a></li>
                 </ul>
             </div>
@@ -56,6 +58,7 @@
                 <h1>
                     Welcome,
                     <?php echo $_SESSION['username']; ?>
+                    (<?php echo $_SESSION['role']; ?>)
                 </h1>
                 <div class="cards">
                     <div class="card">
@@ -97,11 +100,8 @@
                         <?php echo json_encode($data); ?>,
 
                         borderWidth: 1
-
                     }]
-
                 },
-
                 options: {
                     responsive: true,
                     scales: {

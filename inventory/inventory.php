@@ -1,5 +1,9 @@
 <?php
     session_start();
+    if($_SESSION['role'] != 'admin'){
+        header("Location: pos.php");
+    }
+    
     if(!isset($_SESSION['username'])){
         header("Location: login.php");
     }
@@ -36,7 +40,8 @@
                 <br>
                 <form action="actions/add_product.php"
                     method="POST">
-                    <input type="text"name="product_name" placeholder="Product Name" required>
+                    <input type="text" name="product_name" placeholder="Product Name" required>
+                    <input type="text" name="category" placeholder="Category" required>
                     <input type="number"step="0.01" name="price" placeholder="Price" required>
                     <input type="number" name="stocks" placeholder="Stocks" required>
                     <button type="submit" name="add_product">Add Product</button>

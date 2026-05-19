@@ -5,6 +5,7 @@
     if (isset($_POST['add_product'])) {
 
         $product_name = $_POST['product_name'];
+        $category = $_POST['category'];
         $price = $_POST['price'];
         $stocks = $_POST['stocks'];
 

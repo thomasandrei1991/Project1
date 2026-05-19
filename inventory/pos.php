@@ -28,17 +28,30 @@
                 <ul>
                     <li><a href="dashboard.php">Dashboard</a></li>
                     <li><a class="active" href="pos.php">POS</a></li>
-                    <li><a href="inventory.php">Inventory</a></li>
-                    <li><a href="reports.php">Reports</a></li>
+                    <?php if($_SESSION['role'] == 'admin'){ ?>
+                        <li><a href="inventory.php">Inventory</a></li>
+                        <li><a href="reports.php">Reports</a></li>
+                    <?php } ?>
                     <li><a href="logout.php">Logout</a></li>
                 </ul>
             </div>
             <div class="main-content">
                 <h1>Point of Sale</h1>
                 <div class="pos-container">
+                    
+                    <div class="search-container">
+                        <input type="text" id="search" placeholder="Search Product..." onkeyup="searchProduct()">
+                        <select id="categoryFilter" onchange="filterCategory()">
+                            <option value="all">All Categories</option>
+                            <option value="snacks">Snacks</option>
+                            <option value="drinks">Drinks</option>
+                            <option value="meals">Meals</option>
+                        </select>
+                    </div>
+
                     <div class="products">
                         <?php while($row = mysqli_fetch_assoc($result)){ ?>
-                        <div class="product-card">
+                        <div class="product-card" data-name="<?php echo strtolower($row['product_name']); ?>" data-category="<?php echo strtolower($row['category']); ?>">
                             <h3><?php echo $row['product_name']; ?></h3>
                             <p> ₱<?php echo $row['price']; ?></p>
                             <p style="font-size: 0.85rem; color: #64748b; margin: 8px 0;">Stock: <strong><?php echo $row['stocks']; ?></strong></p>
@@ -82,28 +95,20 @@
                             </div>
                         </div>
                     </div>
-                    <div id="receipt" class="receipt">
-                        <button class="close-btn" onclick="closeReceipt()">&times;</button>
-                        <h2>POS SYSTEM</h2>
-                        <hr>
-                        <div id="receipt-items"></div>
-                        <hr>
-                        <h3>
-                            Total:
-                            ₱<span id="receipt-total">0</span>
-                        </h3>
-                        <h3>
-                            Payment:
-                            ₱<span id="receipt-payment">0</span>
-                        </h3>
-                        <h3>
-                            Change:
-                            ₱<span id="receipt-change">0</span>
-                        </h3>
-                        <br>
-                        <p>Thank you for your purchase!</p>
-                        <button onclick="printReceipt()">Print Receipt</button>
-                    </div>
+                </div>
+                <div id="receipt" class="receipt">
+                    <button class="close-btn" onclick="closeReceipt()">&times;</button>
+                    <h2>POS SYSTEM</h2>
+                    <hr>
+                    <div id="receipt-items"></div>
+                    <hr>
+                    <h3>Total:₱<span id="receipt-total">0</span></h3>
+                    <h3>Payment: ₱<span id="receipt-payment">0</span>
+                    </h3>
+                    <h3>Change: ₱<span id="receipt-change">0</span></h3>
+                    <br>
+                    <p>Thank you for your purchase!</p>
+                    <button onclick="printReceipt()">Print Receipt</button>
                 </div>
             </div>
         </div>
@@ -275,6 +280,34 @@
                 document.getElementById('receipt-change').innerText = change;
                 receipt.style.display = 'block';
             }
+
+            function searchProduct(){
+                let input = document.getElementById("search").value.toLowerCase();
+                let cards = document.querySelectorAll(".product-card");
+                cards.forEach(card => {
+                    let name = card.dataset.name;
+                    if(name.includes(input)){
+                        card.style.display = "block";
+                    }else{
+                        card.style.display = "none";
+                    }
+                });
+            }
+
+            function filterCategory(){
+                let category = document.getElementById("categoryFilter").value.toLowerCase();
+                let cards = document.querySelectorAll(".product-card");
+                cards.forEach(card => {
+                    let productCategory =
+                    card.dataset.category;
+                    if(category == "all" ||productCategory == category){
+                        card.style.display = "block";
+                    }else{
+                        card.style.display = "none";
+                    }
+                });
+            }
+
         </script>
     </body>
 </html>
