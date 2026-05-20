@@ -8,11 +8,18 @@
         $category = $_POST['category'];
         $price = $_POST['price'];
         $stocks = $_POST['stocks'];
+        $imageName = basename($_FILES['image']['name']);
+        $tempName = $_FILES['image']['tmp_name'];
+        $folder = "../assets/images/" . $imageName;
 
-        $sql = "INSERT INTO products(product_name, category, price, stocks)
-                VALUES('$product_name', '$category', '$price', '$stocks')";
+        move_uploaded_file(
+            $tempName,
+            $folder
+        );
 
+        $sql = "INSERT INTO products(product_name, category, price, stocks, image) VALUES('$product_name', '$category', '$price', '$stocks', '$imageName')";
         $result = mysqli_query($conn, $sql);
+        
         if (!$result) {
             die("Database insert failed: " . mysqli_error($conn));
         }

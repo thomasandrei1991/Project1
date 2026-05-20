@@ -57,6 +57,7 @@
                     <div class="products">
                         <?php while($row = mysqli_fetch_assoc($result)){ ?>
                         <div class="product-card" data-name="<?php echo strtolower($row['product_name']); ?>" data-category="<?php echo strtolower(trim($row['category'])); ?>">
+                            <img src="assets/images/<?php echo $row['image']; ?>" class="product-image">
                             <h3><?php echo $row['product_name']; ?></h3>
                             <p> ₱<?php echo $row['price']; ?></p>
                             <p style="font-size: 0.85rem; color: #64748b; margin: 8px 0;">Stock: <strong><?php echo $row['stocks']; ?></strong></p>
@@ -311,7 +312,6 @@
                     }
                 });
             }
-
         </script>
     </body>
 </html>

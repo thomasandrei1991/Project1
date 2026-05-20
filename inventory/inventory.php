@@ -38,12 +38,16 @@
             <div class="main-content">
                 <h1>Inventory Management</h1>
                 <br>
-                <form action="actions/add_product.php"
-                    method="POST">
+                <form action="actions/add_product.php" method="POST" enctype="multipart/form-data">
                     <input type="text" name="product_name" placeholder="Product Name" required>
                     <input type="text" name="category" placeholder="Category" required>
                     <input type="number"step="0.01" name="price" placeholder="Price" required>
                     <input type="number" name="stocks" placeholder="Stocks" required>
+                    <div class="file-input-wrapper">
+                        <label for="productImage" class="file-btn">Choose file</label>
+                        <span class="file-name">No file chosen</span>
+                        <input id="productImage" type="file" name="image" required>
+                    </div>
                     <button type="submit" name="add_product">Add Product</button>
                 </form>
                 <br>
@@ -71,5 +75,19 @@
                 </table>
             </div>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const input = document.getElementById('productImage');
+                const nameEl = document.querySelector('.file-name');
+                if (!input || !nameEl) return;
+                input.addEventListener('change', function () {
+                    if (input.files && input.files.length > 0) {
+                        nameEl.textContent = input.files[0].name;
+                    } else {
+                        nameEl.textContent = 'No file chosen';
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
