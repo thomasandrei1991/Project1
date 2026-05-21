@@ -1,21 +1,28 @@
 <?php
-
     session_start();
-    if($_SESSION['role'] != 'admin'){
-        header("Location: pos.php");
-    }
-    if(!isset($_SESSION['username'])){
+
+    // Mas magandang order ng session check
+    if (!isset($_SESSION['username'])) {
         header("Location: login.php");
+        exit;
     }
+
+    if ($_SESSION['role'] != 'admin') {
+        header("Location: pos.php");
+        exit;
+    }
+
     require_once __DIR__ . "/config/database.php";
 
+    /** @var mysqli $conn */
+
+    // Fetch Sales Records
     $sql = "SELECT * FROM sales ORDER BY created_at DESC";
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {
         die("Database query failed: " . mysqli_error($conn));
     }
-
 ?>
 
 <!DOCTYPE html>

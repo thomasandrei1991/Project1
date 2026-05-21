@@ -1,62 +1,96 @@
 <?php
+    session_start();
     require_once __DIR__ . '/../config/database.php';
-    $data = json_decode(file_get_contents('php://input'), true);
-    if (!is_array($data)) {
+
+    /** @var mysqli $conn */
+
+    header('Content-Type: application/json');
+    $request = json_decode(file_get_contents('php://input'), true);
+    $data = $request['cart'];
+    $total = $request['total'];
+    $payment = $request['payment'];
+    $change = $request['change'];
+
+    if (!is_array($data) || empty($data)) {
         http_response_code(400);
-        echo 'Invalid request payload';
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request payload']);
         exit;
     }
 
-    // First, check if all products have enough stock
+    // === 1. Stock Validation ===
     foreach ($data as $item) {
-        $product_name = mysqli_real_escape_string($conn, $item['product']);
-        $quantity = (int) $item['qty'];
-
-        // Check current stock
-        $stock_check = "SELECT stocks FROM products WHERE product_name = '{$product_name}'";
-        $stock_result = mysqli_query($conn, $stock_check);
-        
-        if (!$stock_result || mysqli_num_rows($stock_result) == 0) {
+        if (!isset($item['product'], $item['qty'], $item['price'])) {
             http_response_code(400);
-            echo 'Product not found: ' . $product_name;
+            echo json_encode(['status' => 'error', 'message' => 'Missing required fields']);
             exit;
         }
 
-        $stock_row = mysqli_fetch_assoc($stock_result);
-        $current_stock = (int) $stock_row['stocks'];
+        $product_name = trim($item['product']);
+        $quantity = (int)$item['qty'];
+
+        $stmt = mysqli_prepare($conn, "SELECT stocks FROM products WHERE product_name = ?");
+        mysqli_stmt_bind_param($stmt, 's', $product_name);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $current_stock);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
+
+        if ($current_stock === null) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Product not found: ' . $product_name]);
+            exit;
+        }
 
         if ($current_stock < $quantity) {
             http_response_code(400);
-            echo 'Insufficient stock for: ' . $product_name . '. Available: ' . $current_stock . ', Requested: ' . $quantity;
+            echo json_encode([
+                'status' => 'error',
+                'message' =>
+                "Insufficient stock for {$product_name}"
+            ]);
             exit;
         }
     }
 
-    // If all items have enough stock, proceed with the sale and update inventory
-    foreach ($data as $item) {
-        $product_name = mysqli_real_escape_string($conn, $item['product']);
-        $quantity = (int) $item['qty'];
-        $price = (float) $item['price'];
+    // === 2. Process Sale & Update Stock ===
+    mysqli_begin_transaction($conn);   // ← Important: Para consistent ang data
 
-        $total = $price * $quantity;
+    try {
+        foreach ($data as $item) {
+            $product_name = trim($item['product']);
+            $quantity     = (int)$item['qty'];
+            $price        = (float)$item['price'];
+            $total        = $price * $quantity;
 
-        // Insert into sales table
-        $sql = "INSERT INTO sales (product_name, quantity, price, total) VALUES ('{$product_name}', {$quantity}, {$price}, {$total})";
+            // Insert into sales
+            $stmt = mysqli_prepare($conn, 
+                "INSERT INTO sales (product_name, quantity, price, total, created_at) 
+                VALUES (?, ?, ?, ?, NOW())"
+            );
+            mysqli_stmt_bind_param($stmt, 'sidd', $product_name, $quantity, $price, $total);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
 
-        if (!mysqli_query($conn, $sql)) {
-            http_response_code(500);
-            echo 'Database error: ' . mysqli_error($conn);
-            exit;
+            // Update stock
+            $stmt = mysqli_prepare($conn, 
+                "UPDATE products SET stocks = stocks - ? WHERE product_name = ?"
+            );
+            mysqli_stmt_bind_param($stmt, 'is', $quantity, $product_name);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
         }
 
-        // Update the inventory (reduce stock)
-        $update_stock = "UPDATE products SET stocks = stocks - {$quantity} WHERE product_name = '{$product_name}'";
-        
-        if (!mysqli_query($conn, $update_stock)) {
-            http_response_code(500);
-            echo 'Failed to update inventory: ' . mysqli_error($conn);
-            exit;
-        }
+        mysqli_commit($conn);
+        $_SESSION['receipt'] = ['cart' => $data, 'total' => $total, 'payment' => $payment, 'change' => $change];
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Sale completed successfully',
+            'redirect' => 'receipt.php'
+        ]);
+
+    } catch (Exception $e) {
+        mysqli_rollback($conn);
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Transaction failed: ' . $e->getMessage()]);
     }
-    echo 'Success';
 ?>

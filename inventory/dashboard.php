@@ -1,34 +1,48 @@
 <?php
-
     session_start();
-    require_once __DIR__ . "/config/database.php";
-    if(!isset($_SESSION['username'])){
+
+    if (!isset($_SESSION['username'])) {
         header("Location: login.php");
+        exit;
     }
 
+    require_once __DIR__ . "/config/database.php";
+
+    /** @var mysqli $conn */
+
+    // Total Sales
     $totalSalesQuery = "SELECT SUM(total) AS total_sales FROM sales";
     $totalSalesResult = mysqli_query($conn, $totalSalesQuery);
-    $totalSales = mysqli_fetch_assoc($totalSalesResult);
+    $totalSalesRow = mysqli_fetch_assoc($totalSalesResult);
+    $totalSales = $totalSalesRow['total_sales'] ?? 0;
+
+    // Total Products
     $productQuery = "SELECT COUNT(*) AS total_products FROM products";
     $productResult = mysqli_query($conn, $productQuery);
-    $totalProducts = mysqli_fetch_assoc($productResult);
+    $productRow = mysqli_fetch_assoc($productResult);
+    $totalProducts = $productRow['total_products'] ?? 0;
+
+    // Total Transactions
     $transactionQuery = "SELECT COUNT(*) AS total_transactions FROM sales";
     $transactionResult = mysqli_query($conn, $transactionQuery);
-    $totalTransactions = mysqli_fetch_assoc($transactionResult);
+    $transactionRow = mysqli_fetch_assoc($transactionResult);
+    $totalTransactions = $transactionRow['total_transactions'] ?? 0;
 
-    $bestSellerQuery = "SELECT product_name,SUM(quantity) AS total_qty FROM sales GROUP BY product_name ORDER BY total_qty DESC LIMIT 5";
+    // Best Sellers
+    $bestSellerQuery = "SELECT product_name, SUM(quantity) AS total_qty 
+                        FROM sales 
+                        GROUP BY product_name 
+                        ORDER BY total_qty DESC 
+                        LIMIT 5";
     $bestSellerResult = mysqli_query($conn, $bestSellerQuery);
 
     $labels = [];
     $data = [];
 
-    while($row = mysqli_fetch_assoc($bestSellerResult)){
-
+    while ($row = mysqli_fetch_assoc($bestSellerResult)) {
         $labels[] = $row['product_name'];
-        $data[] = $row['total_qty'];
-
+        $data[]   = (int)$row['total_qty'];
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -63,17 +77,15 @@
                 <div class="cards">
                     <div class="card">
                         <h3>Total Sales</h3>
-                        <p>₱<?php echo number_format($totalSales['total_sales'], 2); ?></p>
+                        <p>₱<?php echo number_format($totalSales, 2); ?></p>
                     </div>
                     <div class="card">
                         <h3>Total Products</h3>
-                        <p><?php echo $totalProducts['total_products']; ?></p>
+                        <p><?php echo $totalProducts; ?></p>
                      </div>
                     <div class="card">
                         <h3>Total Transactions</h3>
-                        <p>
-                        <?php echo $totalTransactions['total_transactions']; ?>
-                        </p>
+                        <p><?php echo $totalTransactions; ?></p>
                     </div>
                 </div>
                 <br><br>

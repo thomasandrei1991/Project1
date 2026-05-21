@@ -230,7 +230,12 @@
                     headers:{
                         "Content-Type":"application/json"
                     },
-                    body: JSON.stringify(cart)
+                    body: JSON.stringify({
+                        cart: cart,
+                        total: total,
+                        payment: payment,
+                        change: change
+                    })
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -238,7 +243,7 @@
                             throw new Error(text);
                         });
                     }
-                    return response.text();
+                    return response.json();
                 })
                 .then(data => {
                     let receiptItems = "";
@@ -258,6 +263,7 @@
                     document.getElementById("receipt-change").innerText = change;
                     document.getElementById("receipt").style.display = "block";
                     alert("Checkout Successful! Inventory has been updated.");
+                    window.location.href = data.redirect;
                     cart = [];
                     displayCart();
                     document.getElementById("payment").value = "";
