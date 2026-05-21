@@ -1,20 +1,28 @@
 <?php
-
     session_start();
-    if(!isset($_SESSION['username'])){
+
+    if (!isset($_SESSION['username'])) {
         header("Location: login.php");
+        exit;
     }
 
     require_once __DIR__ . "/config/database.php";
-    $sql = "SELECT * FROM products";
+
+    /** @var mysqli $conn */
+
+    // Main products query
+    $sql = "SELECT * FROM products ORDER BY id DESC";
     $result = mysqli_query($conn, $sql);
-    $categoryQuery = "SELECT DISTINCT category FROM products";
+
+    // Category filter (for dropdown later)
+    $categoryQuery = "SELECT DISTINCT category FROM products ORDER BY category ASC";
     $categoryResult = mysqli_query($conn, $categoryQuery);
+
     if (!$result) {
         die("Database query failed: " . mysqli_error($conn));
     }
-
 ?>
+
 
 <!DOCTYPE html>
 <html>
