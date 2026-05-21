@@ -272,6 +272,7 @@ table td {
     text-align: left;
     border-left: none;
     border-right: none;
+    vertical-align: middle;
 }
 
 table th {
@@ -301,6 +302,72 @@ table tr {
 
 table tr:hover {
     background: rgba(15, 23, 42, 0.03);
+}
+
+.inventory-table {
+    width: 100%;
+    table-layout: fixed;
+    min-width: 0;
+}
+
+.inventory-table th,
+.inventory-table td {
+    padding: 18px 20px;
+    overflow-wrap: anywhere;
+}
+
+.inventory-table th:nth-child(1) {
+    width: 8%;
+}
+
+.inventory-table th:nth-child(2) {
+    width: 42%;
+}
+
+.inventory-table th:nth-child(3),
+.inventory-table th:nth-child(4) {
+    width: 15%;
+}
+
+.inventory-table th:nth-child(5) {
+    width: 20%;
+}
+
+.actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    min-width: 96px;
+    min-height: 40px;
+    line-height: 1;
+    border-radius: 9999px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+}
+
+.edit-btn {
+    background: linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%);
+}
+
+.delete-btn {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
 }
 
 a {
@@ -1208,4 +1275,12 @@ canvas{
     object-fit:cover;
     border-radius:10px;
     margin-bottom:15px;
+}
+
+#barcodeInput{
+    width:300px;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
 }

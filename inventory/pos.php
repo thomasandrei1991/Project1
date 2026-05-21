@@ -53,10 +53,13 @@
                             <?php } ?>
                         </select>
                     </div>
-
+                    <div class="barcode-container">
+                        <input type="text" id="barcodeInput" placeholder="Scan Barcode..." onkeyup="scanBarcode(event)">
+                    </div>
+                    <br>
                     <div class="products">
                         <?php while($row = mysqli_fetch_assoc($result)){ ?>
-                        <div class="product-card" data-name="<?php echo strtolower($row['product_name']); ?>" data-category="<?php echo strtolower(trim($row['category'])); ?>">
+                        <div class="product-card" data-name="<?php echo strtolower($row['product_name']); ?>" data-category="<?php echo strtolower(trim($row['category'])); ?>" data-barcode="<?php echo $row['barcode']; ?>">
                             <img src="assets/images/<?php echo $row['image']; ?>" class="product-image">
                             <h3><?php echo $row['product_name']; ?></h3>
                             <p> ₱<?php echo $row['price']; ?></p>
@@ -311,6 +314,22 @@
                         card.style.display = "none";
                     }
                 });
+            }
+
+            function scanBarcode(event){
+                if(event.key === "Enter"){
+                    let barcode = document.getElementById("barcodeInput").value;
+                    let cards = document.querySelectorAll(".product-card");
+                    cards.forEach(card => {
+                        let productBarcode = card.dataset.barcode;
+
+                        if(productBarcode === barcode){
+                            let button = card.querySelector("button");
+                            button.click();
+                        }
+                    });
+                    document.getElementById("barcodeInput").value = "";
+                }
             }
         </script>
     </body>

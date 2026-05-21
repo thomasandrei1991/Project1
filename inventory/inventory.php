@@ -3,7 +3,6 @@
     if($_SESSION['role'] != 'admin'){
         header("Location: pos.php");
     }
-    
     if(!isset($_SESSION['username'])){
         header("Location: login.php");
     }
@@ -42,6 +41,7 @@
                     <input type="text" name="product_name" placeholder="Product Name" required>
                     <input type="text" name="category" placeholder="Category" required>
                     <input type="number"step="0.01" name="price" placeholder="Price" required>
+                    <input type="text" name="barcode" placeholder="Barcode" required>
                     <input type="number" name="stocks" placeholder="Stocks" required>
                     <div class="file-input-wrapper">
                         <label for="productImage" class="file-btn">Choose file</label>
@@ -52,16 +52,13 @@
                 </form>
                 <br>
                 <br>
-                <table border="1"
-                    width="100%"
-                    cellpadding="10">
-
+                <table class="inventory-table">
                     <tr>
                         <th>ID</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Stocks</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                     </tr>
                     <?php while($row = mysqli_fetch_assoc($result)){ ?>
                     <tr>
@@ -69,7 +66,10 @@
                         <td><?php echo $row['product_name']; ?></td>
                         <td>₱<?php echo $row['price']; ?></td>
                         <td><?php echo $row['stocks']; ?></td>
-                        <td><a href="actions/delete_product.php?id=<?php echo $row['id']; ?>">Delete</a></td>
+                        <td class="actions">
+                            <a class="action-btn edit-btn" href="edit_product.php?id=<?php echo $row['id']; ?>">Edit</a>
+                            <a class="action-btn delete-btn" href="actions/delete_product.php?id=<?php echo $row['id']; ?>">Delete</a>
+                        </td>
                     </tr>
                     <?php } ?>
                 </table>

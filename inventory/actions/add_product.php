@@ -11,13 +11,14 @@
         $imageName = basename($_FILES['image']['name']);
         $tempName = $_FILES['image']['tmp_name'];
         $folder = "../assets/images/" . $imageName;
+        $barcode = $_POST['barcode'];
 
         move_uploaded_file(
             $tempName,
             $folder
         );
 
-        $sql = "INSERT INTO products(product_name, category, price, stocks, image) VALUES('$product_name', '$category', '$price', '$stocks', '$imageName')";
+        $sql = "INSERT INTO products(product_name, category, price, barcode,  stocks, image) VALUES('$product_name', '$category', '$price', '$barcode', '$stocks', '$imageName')";
         $result = mysqli_query($conn, $sql);
         
         if (!$result) {
