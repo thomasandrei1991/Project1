@@ -29,6 +29,7 @@
     <head>
         <title>POS</title>
         <link rel="stylesheet" href="assets/css/style.css">
+        <script src="https://unpkg.com/html5-qrcode"></script>
     </head>
     <body>
         <div class="dashboard-container">
@@ -64,7 +65,12 @@
                     <div class="barcode-container">
                         <input type="text" id="barcodeInput" placeholder="Scan Barcode..." onkeyup="scanBarcode(event)">
                     </div>
-                    <br>
+                    <br><br>
+                    <button onclick="startScanner()">Open Camera Scanner</button>
+                    <br><br>
+                    <div id="reader"
+                        style="width:300px;">
+                    </div>
                     <div class="products">
                         <?php while($row = mysqli_fetch_assoc($result)){ ?>
                         <div class="product-card" data-name="<?php echo strtolower($row['product_name']); ?>" data-category="<?php echo strtolower(trim($row['category'])); ?>" data-barcode="<?php echo $row['barcode']; ?>">
@@ -344,6 +350,29 @@
                     });
                     document.getElementById("barcodeInput").value = "";
                 }
+            }
+            function startScanner(){
+                const html5QrCode = new Html5Qrcode("reader");
+                html5QrCode.start({ facingMode: "environment" },{fps: 10, qrbox: 250},(decodedText) => {
+                        let cards = document.querySelectorAll(".product-card");
+                        cards.forEach(card => {
+                            let barcode = card.dataset.barcode;
+                            if(barcode === decodedText){
+                                let button = card.querySelector("button");
+                                button.click();
+                            }
+                        });
+                    },
+                    (errorMessage) => {
+                        // ignore scan errors
+                    }
+                ).catch(err => {
+
+                    alert(
+                        "Camera Error: " + err
+                    );
+
+                });
             }
         </script>
     </body>

@@ -48,13 +48,10 @@
                 
                 <form action="actions/update_product.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-
                     <label>Product Name:</label><br>
                     <input type="text" name="product_name" value="<?php echo htmlspecialchars($row['product_name']); ?>" required><br><br>
-
                     <label>Category:</label><br>
                     <input type="text" name="category" value="<?php echo htmlspecialchars($row['category']); ?>" required><br><br>
-
                     <label>Barcode:</label><br>
                     <input type="text" name="barcode" value="<?php echo htmlspecialchars($row['barcode']); ?>" required><br><br>
 
@@ -66,7 +63,8 @@
 
                     <label>Current Image:</label><br>
                     <?php if (!empty($row['image'])): ?>
-                        <img src="../../assets/images/<?php echo htmlspecialchars($row['image']); ?>" width="150" alt="Current Image"><br><br>
+                        <!--<img src="../../assets/images/<?php echo htmlspecialchars($row['image']); ?>" width="150" alt="Current Image"><br><br> -->
+                        <img src="/<?php echo htmlspecialchars($row['image']); ?>" width="150" alt="Current Image">
                     <?php else: ?>
                         <p><em>No image available</em></p><br>
                     <?php endif; ?>

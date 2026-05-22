@@ -1,5 +1,5 @@
 <?php
-    require_once __DIR__ . '/../config/database.php';
+    require_once __DIR__ . '/../config/database.php'; // ✅ this one is actually correct
     $conn = $GLOBALS['conn'];
 
     if (isset($_POST['update_product'])) {
@@ -28,7 +28,7 @@
                 $newName = time() . '_' . bin2hex(random_bytes(8)) . '.' . $ext;
                 
                 // Correct Upload Path (from actions/ folder)
-                $uploadDir = __DIR__ . '/../../assets/images/';
+                $uploadDir = __DIR__ . '/../assets/images/';
                 
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0755, true);
